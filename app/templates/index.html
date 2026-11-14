@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Atlas Enterprise RAG</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="logo">ATLAS<span>AI</span><small>ENTERPRISE RAG</small></div>
+        <div class="eyebrow">WORKSPACE</div>
+        <button id="chatTab" class="nav active" type="button">💬 Chat</button>
+        <button id="docsTab" class="nav" type="button">📄 Documents</button>
+        <button id="approvalTab" class="nav" type="button">✅ Approvals</button>
+        <button id="adminTab" class="nav" type="button">📊 Admin</button>
+        <div class="sidebottom">
+          <div>{{ mode }}</div>
+          <div>No sign-in required</div>
+          <a href="/api/docs"><button type="button">API docs</button></a>
+        </div>
+      </aside>
+
+      <main>
+        <header>
+          <div>
+            <h1 id="heading">Ask your organization's knowledge</h1>
+            <p class="hint" style="text-align: left; margin: 0">
+              Answers are grounded in your approved documents, with citations.
+            </p>
+          </div>
+          <span class="pill">● {{ region }} · {{ mode }}</span>
+        </header>
+
+        <!-- Chat -->
+        <section id="chatView" class="panel">
+          <div class="hero">
+            <div class="spark">✦</div>
+            <h2>What would you like to know?</h2>
+            <p>Ask a question and Atlas will search your indexed documents.</p>
+            <div class="suggestions">
+              <button type="button" data-q="Summarize the key points of our most recent policy document.">
+                Summarize a policy
+              </button>
+              <button type="button" data-q="What is the process for requesting reimbursement?">
+                Reimbursement process
+              </button>
+              <button type="button" data-q="Delete the outdated onboarding document.">
+                Try an approval request
+              </button>
+            </div>
+          </div>
+
+          <div id="messages" aria-live="polite"></div>
+
+          <form id="chatForm" class="composer">
+            <textarea
+              id="question"
+              rows="2"
+              minlength="3"
+              maxlength="2000"
+              placeholder="Ask a question about your documents..."
+              required
+            ></textarea>
+            <button id="newChat" type="button">New chat</button>
+            <button type="submit">Send</button>
+          </form>
+          <div class="hint">Atlas can make mistakes. Check the cited sources.</div>
+        </section>
+
+        <!-- Documents -->
+        <section id="docsView" class="panel hidden">
+          <h2>Upload documents</h2>
+          <p>PDF, DOCX, TXT or MD up to 10 MB. Files go to S3, then get indexed in Pinecone.</p>
+          <form id="uploadForm">
+            <input id="file" type="file" accept=".pdf,.docx,.txt,.md" required />
+            <button type="submit">Upload &amp; index</button>
+          </form>
+          <h2>Your documents</h2>
+          <div id="docs">Loading documents...</div>
+        </section>
+
+        <!-- Approvals -->
+        <section id="approvalView" class="panel hidden">
+          <div class="section-header">
+            <div>
+              <h2>Human-in-the-loop approvals</h2>
+              <p>Sensitive requests (delete, export, send, policy updates) wait here for an admin decision.</p>
+            </div>
+            <button id="refreshApprovals" type="button">↻ Refresh</button>
+          </div>
+          <div id="approvalSummary"></div>
+          <div id="approvalList"></div>
+        </section>
+
+        <!-- Admin -->
+        <section id="adminView" class="panel hidden">
+          <h2>Documents &amp; feedback</h2>
+          <pre id="metrics">Loading metrics...</pre>
+          <h2>Guardrails</h2>
+          <pre id="guardrailMetrics">Loading guardrail metrics...</pre>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" role="status"></div>
+
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>
