@@ -1,0 +1,26 @@
+# --- Web API ---
+fastapi==0.115.12            # Web framework for the REST API endpoints (request validation via Pydantic, auto OpenAPI docs)
+uvicorn[standard]==0.34.2    # ASGI server that runs the FastAPI app; [standard] adds uvloop, httptools, websockets, file-watch reload
+jinja2==3.1.6                # Templating engine: HTML pages served by FastAPI and/or reusable prompt templates
+
+# --- Configuration ---
+pydantic-settings==2.8.1     # Typed app settings loaded from environment variables / .env (API keys, DB URLs, index names)
+python-dotenv==1.0.1         # Reads .env files into the environment for local development (also used by pydantic-settings)
+
+# --- Cloud & storage ---
+boto3==1.37.38               # AWS SDK: S3 for storing uploaded source documents, and other AWS services (e.g. Bedrock)
+psycopg[binary,pool]==3.2.6  # PostgreSQL driver; [binary] ships prebuilt libpq (no compiler needed), [pool] adds connection pooling
+
+# --- Document ingestion ---
+pypdf==5.4.0                 # Extracts text from PDF files before chunking and embedding
+python-docx==1.1.2           # Extracts text from Word (.docx) files before chunking and embedding
+
+# --- HTTP ---
+httpx==0.28.1                # Sync/async HTTP client for calling external APIs (LLM/embedding endpoints); also used by FastAPI's TestClient
+
+# --- RAG / agent orchestration ---
+langgraph>=0.2,<2            # Builds the RAG pipeline as a stateful graph of steps (retrieve -> grade -> generate), with branching and retries
+pinecone>=5,<9               # Pinecone vector database client: upsert document embeddings and run similarity search at query time
+
+# --- Observability ---
+glassflow-rius>=1.0,<2.0     # GlassFlow Rius SDK: OpenTelemetry-based tracing of every LLM call, tool call and agent step, with per-call cost and alerts
